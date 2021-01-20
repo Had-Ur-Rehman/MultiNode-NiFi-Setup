@@ -300,3 +300,60 @@ For Example: ``` 192.168.XXX.XXX:8080 ```
 
 
 # 3 Node Cluster of NiFi
+I deploy the binaries file on my three instances and unzip it. I now have a NiFi directory on each one of my nodes.
+
+The first thing is to configure the list of the ZK (ZooKeeper) instances in the configuration file ```./conf/zookeeper.properties```
+
+* Since our three NiFi instances will run the embedded ZK instance, I just have to complete the file with the following properties:
+```
+server.1=master:2888:3888;2181
+server.2=datanode1:2888:3888;2181
+server.3=datanode2:2888:3888;2181
+
+```
+Then, everything happens in the ```./conf/nifi.properties```.
+
+Go to nifi.properties.
+
+* First, I specify that NiFi must run an embedded ZK instance, with the following property:
+```
+nifi.state.management.embedded.zookeeper.start=true
+```
+
+* I also specify the ZK connect string:
+
+```
+master:2181,datanode1:2181,datanode2:2181
+```
+
+As you can notice, the ./conf/zookeeper.properties file has a property named dataDir. 
+By default, this value is set to ./state/zookeeper. 
+If more than one NiFi node is running an embedded ZK, it is important to tell the server which one it is.
+
+To do that, you need to create a file name myid and placing it in ZK’s data directory. The content of this file should be the index of the server as previously specify by the server. property.
+
+* For master:
+```
+mkdir ./state                   
+	mkdir ./state/zookeeper
+	echo 1 > ./state/zookeeper/myid   
+
+```
+(myid is server.myid for example in our case it is server.1)
+myid will contain value 1
+
+* For datanode1:
+```
+mkdir ./state
+mkdir ./state/zookeeper
+echo 2 > ./state/zookeeper/myid
+```
+
+* For datanode2:
+
+```
+mkdir ./state
+mkdir ./state/zookeeper
+echo 3 > ./state/zookeeper/myid
+
+```
