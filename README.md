@@ -201,4 +201,102 @@ umask 0022
  echo umask 0022 >> /etc/profile
 ```
 
-# One Node NiFi Installation:
+# NiFi Installation on a single Node:
+* create new non-root user named nifi
+```
+cd /home/nifi
+
+```
+
+* then to download nifi file write following command: 
+
+```
+wget -O nifi-1.12.1-bin.tar.gz https://downloads.apache.org/nifi/1.12.1/nifi-1.12.1-bin.tar.gz
+```
+
+* Extract the file and go to extracted file:
+
+```
+tar -xvf nifi-1.12.1-bin.tar.gz
+cd nifi-1.12.1
+cd bin
+
+```
+
+* By default nifi will have port 8080 if you want to change the port then follow the steps
+```
+cd /home/nifi/nifi-1.12.1/conf
+ls
+vi nifi.properties
+
+
+```
+search for port or 8080 and change it to whatever you want to
+
+* Checking Services of Nifi
+go to bin folder of nifi-1.12.1 and execute the following command and will give you service for nifi
+``` 
+./nifi.sh –help 
+```
+
+* Starting NiFi and checking status
+
+```
+./nifi.sh start
+./nifi.sh status
+```
+
+**Got Error During startup of NiFi solution was to install Java**
+
+## Installing Java
+Install Java 8 or 11 because nifi only supports these Java
+
+also install it in 	```cd /home/nifi```
+
+* Add the following command to download java in linux ( I specifically download Java 8 ) 
+
+```
+wget -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz -O jdk-8-linux-x64.tar.gz
+```
+* Then extract the downloaded file
+
+```
+tar -xvf jdk-8-linux-x64.tar.gz
+```
+
+* Finding Java
+```
+cd /home/nifi/jdk1.8.0_131
+cd bin
+```
+
+## Setting Path of Java
+
+* Go to bash and add the following command:
+
+```
+export JAVA_HOME=/home/nifi/jdk1.8.0_131
+```
+To check if Java is working write ``` java ``` in linux shell.
+
+## Starting NiFi:
+
+* Write the following command to start Nifi:
+
+```
+./nifi.sh start 
+```
+
+* Go to nifi folder then go to logs
+then write following command:
+
+```
+tail -f nifi-app.log
+```
+
+if its running properly it will show ip of machine with the port that you have set.
+Enter the Ip address of machine with port in windows browser
+For Example: ``` 192.168.XXX.XXX:8080 ```
+
+
+# 3 Node Cluster of NiFi
