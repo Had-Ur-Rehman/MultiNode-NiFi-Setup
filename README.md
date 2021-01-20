@@ -15,7 +15,7 @@ This is a guide to setup multi-node NiFi Cluster in CentOS7
 * Select VDI (Virtualbox Disk Image)
 * Select Dynamically Allocated
 * Assign the storage according to the available storage on your system. (Atleast 8GB)
-* Creating Adapters 1. Goto File > Host Network Manager 2. There are 3 buttons shown namely: create, remove and properties 3. Create 2 Adapters and name them vboxnet0 and       vboxnet1
+* Creating Adapters 1. Goto File > Host Network Manager 2. There are 3 buttons shown namely: create, remove and properties 3. Create 2 Adapters and name them virtualbox host ethernet adapter and virtualbox host ethernet adapter1
 * Now go back to the VirtualBox and select the VM that is just created and click on the settings button.
 * Goto Adapter tab. 1. Under Adapter2 tab, select the Enable Network Adapter checkbox and assign virtualbox host ethernet adapter. 2. Goto Adapter3 tab, select the Enable Network Adapter checkbox and assign virtualbox host ethernet adapter1 .
 * Now goto Storage tab in settings and Select the empty disk. on the right side, add the CentOS7 ISO Image.
