@@ -357,3 +357,135 @@ mkdir ./state/zookeeper
 echo 3 > ./state/zookeeper/myid
 
 ```
+* Then we go to clustering properties. For this article, we are setting up an unsecured cluster, so we must keep:
+
+```
+nifi.cluster.protocol.is.secure=false
+```
+Then, we have the following properties:
+
+* For master
+
+```
+
+    nifi.cluster.is.node=true
+    nifi.cluster.node.address=master
+    nifi.cluster.node.protocol.port=9999
+    nifi.cluster.node.protocol.threads=10
+    nifi.cluster.node.event.history.size=25
+    nifi.cluster.node.connection.timeout=5 sec
+    nifi.cluster.node.read.timeout=5 sec
+    nifi.cluster.firewall.file=
+
+```
+
+* For datanode1
+
+```
+    nifi.cluster.is.node=true
+    nifi.cluster.node.address=datanode1
+    nifi.cluster.node.protocol.port=9999
+    nifi.cluster.node.protocol.threads=10
+    nifi.cluster.node.event.history.size=25
+    nifi.cluster.node.connection.timeout=5 sec
+    nifi.cluster.node.read.timeout=5 sec
+    nifi.cluster.firewall.file=
+
+```
+
+* For datanode2
+
+```
+    nifi.cluster.is.node=true
+    nifi.cluster.node.address=datanode2
+    nifi.cluster.node.protocol.port=9999
+    nifi.cluster.node.protocol.threads=10
+    nifi.cluster.node.event.history.size=25
+    nifi.cluster.node.connection.timeout=5 sec
+    nifi.cluster.node.read.timeout=5 sec
+    nifi.cluster.firewall.file=
+
+```
+
+I set the FQDN of the node I am configuring, and I choose the arbitrary 9999 port for the communication with the elected cluster coordinator. I apply the same configuration on my other nodes:
+
+We have configured the exchanges between the nodes and the cluster coordinator, now let’s move to the exchanges between the nodes (to balance the data of the flows). We have the following properties:
+
+* For master 
+```
+    nifi.remote.input.host=master
+    nifi.remote.input.secure=false
+    nifi.remote.input.socket.port=9998
+    nifi.remote.input.http.enabled=true
+    nifi.remote.input.http.transaction.ttl=30 sec
+
+    nifi.load.balance.host=master
+
+```
+
+* For datanode1
+
+```
+    nifi.remote.input.host=datanode1
+    nifi.remote.input.secure=false
+    nifi.remote.input.socket.port=9998
+    nifi.remote.input.http.enabled=true
+    nifi.remote.input.http.transaction.ttl=30 sec
+
+    nifi.load.balance.host=datanode1
+
+
+```
+
+* For datanode2
+
+```
+    nifi.remote.input.host=datanode2
+    nifi.remote.input.secure=false
+    nifi.remote.input.socket.port=9998
+    nifi.remote.input.http.enabled=true
+    nifi.remote.input.http.transaction.ttl=30 sec
+
+    nifi.load.balance.host=datanode2
+
+```
+Again, I set the FQDN of the node I am configuring and I choose the arbitrary 9998 port for the Site-to-Site (S2S) exchanges between the nodes of my cluster. 
+The same applies for all the nodes (just change the host property with the correct FQDN).
+
+It is also important to set the FQDN for the web server property, otherwise we may get strange behaviors with all nodes identified as ‘localhost’ in the UI.
+Consequently, for each node, set the following property with the correct FQDN:
+
+* For master:
+```
+nifi.web.http.host=master
+nifi.web.http.port=8080
+
+```
+
+* For datanode1:
+
+```
+nifi.web.http.host=datanode1
+nifi.web.http.port=8080
+
+```
+
+* For datanode2:
+
+```
+nifi.web.http.host=datanode2
+nifi.web.http.port=8080
+```
+
+* run this command on each node on nifi folder
+
+```
+./bin/nifi.sh start && tail -f ./logs/nifi-app.log
+```
+
+* Now Open the whatever node you want to open on browser for example:
+```
+192.168.XXX.111:8080 for master
+192.168.XXX.112:8080 for datanode1
+192.168.XXX.113:8080 for datanode2
+```
