@@ -32,7 +32,8 @@ This is a guide to setup multi-node NiFi Cluster in CentOS7
 ## 4. Setup Static IP Address:
 
 * To set a static IP address, use the following command to add configurations:
-    
-...```vi /etc/sysconfig/network-scripts/ifcfg-enp0s8
+```
+vi /etc/sysconfig/network-scripts/ifcfg-enp0s8
+
 ```        
 
