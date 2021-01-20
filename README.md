@@ -20,4 +20,17 @@ This is a guide to setup multi-node NiFi Cluster in CentOS7
 * Goto Adapter tab. 1. Under Adapter2 tab, select the Enable Network Adapter checkbox and assign virtualbox host ethernet adapter. 2. Goto Adapter3 tab, select the Enable Network Adapter checkbox and assign virtualbox host ethernet adapter1 .
 * Now goto Storage tab in settings and Select the empty disk. on the right side, add the CentOS7 ISO Image.
 * Now run the VM
-*
+
+## 3. Installation of CentOS7 on VM
+
+* Select the language
+* Add date and time
+* Goto Network and Hostname and select all 3 adapters
+* Click on Begin Installation
+* add root password
+
+## 4. Setup Static IP Address:
+
+* To set a static IP address, use the following command to add configurations:
+    '''  vi /etc/sysconfig/network-scripts/ifcfg-enp0s8 '''
+
